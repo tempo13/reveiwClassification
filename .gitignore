@@ -1,0 +1,9 @@
+# HTML selecor
+*.json
+# User-agent
+*.pickle
+# URL list
+url_list.py
+/venv
+/.idea
+__pycache__/
