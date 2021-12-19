@@ -4,6 +4,7 @@ import pickle
 import random
 import url_list as u
 import os
+import re
 
 class Fetch:
 
@@ -44,3 +45,13 @@ class Fetch:
         except Exception as e:
             print("raise Error cause: %e" %e)
         return result
+
+
+def parse_number(txt):
+    """
+    숫자가 포함된 텍스트를 받아 숫자를 찾아줌
+    :param txt: 텍스트
+    :return: 만약 숫자가 있으면 숫자 텍스트만, 없으면 빈 리스트
+    """
+    result = re.findall(r'\d+', txt)
+    return result
