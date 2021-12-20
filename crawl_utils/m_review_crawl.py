@@ -4,11 +4,12 @@ import json
 
 class MsProductReview:
 
-    def __init__(self):
+    def __init__(self, gender=None):
         self.prd_list = None
         self.body_info = None
         self.load_parser()
         self.crawl = Fetch()
+        self.gender = gender
         return
 
     def load_parser(self):
@@ -48,6 +49,8 @@ class MsProductReview:
     def crawl_list(self):
         target_url = u.MSA_BEST
         self.crawl = Fetch()
+        if self.gender is not None:
+            self.crawl.sess.headers.update({'cookie': '_gf='})
         res = self.crawl.fetch_get(target_url)
         if not res:
             raise ValueError
