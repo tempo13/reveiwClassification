@@ -64,17 +64,24 @@ class MsProductReview:
     def crawl_item(self, goods_no, last_page=10):
         result = []
         target_url = u.MSA
-        params = {'sort': 'new', 'selectedSimilarNo': 0, 'goodsNo': goods_no}
+        params = {'sort': 'new', 'selectedSimilarNo': 0, 'goodsNo': goods_no, 'page': 1}
+        # page 1 crawl total count.
+        res = self.crawl.fetch_get(target_url, params)
+        html_text = str(res.text).replace('<br>', '')
+        total_page = self.get_review_cnt(html_text)
+        if total_page < 1:
+            return result
+        last_page = last_page if last_page < total_page else total_page
+        item = self.parse_item(html_text)
+        result.extend(item)
+
         print('URL: %s' % u.MSA_PRD + goods_no)
-        for i in tqdm(range(1, last_page)):
+        for i in tqdm(range(2, last_page)):
             params.update({'page': i})
             res = self.crawl.fetch_get(target_url, params)
             if not res:
                 raise ValueError
             html_text = str(res.text).replace('<br>', '')
-            if i == 1:
-                total_page = self.get_review_cnt(html_text)
-                last_page = last_page if last_page > total_page else total_page
             item = self.parse_item(html_text)
             result.extend(item)
             time.sleep(random.uniform(1, 3))
