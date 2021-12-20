@@ -4,6 +4,8 @@
 *.pickle
 # URL list
 url_list.py
+# CSV file
+*.csv
 /venv
 /.idea
 __pycache__/

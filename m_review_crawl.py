@@ -82,13 +82,21 @@ class MsProductReview:
         return review_cnt
 
     def main(self):
+        stop_stack = 0
         goods_list = self.crawl_list()
         review_list = []
         print("=" * 30 + str(len(goods_list)) + "=" * 30)       # Start print
         for g in goods_list:
-            r = self.crawl_item(g, 100)
-            print(str(g)+"=" * 30 + str(len(r)) + "=" * 30)     # Print Process
-            review_list.extend(r)
+            if stop_stack > len(goods_list) // 2:
+                break
+            try:
+                r = self.crawl_item(g, 100)
+                print(str(g)+"=" * 30 + str(len(r)) + "=" * 30)     # Print Process
+                review_list.extend(r)
+            except Exception as e:
+                stop_stack += 1
+                print(str(e))
+                continue
             time.sleep(random.uniform(1, 3))
         return review_list
 
