@@ -3,7 +3,7 @@
 # User-agent
 *.pickle
 # URL list
-url_list.py
+crawl_utils/url_list.py
 # CSV file
 *.csv
 /venv

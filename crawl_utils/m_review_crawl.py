@@ -9,6 +9,8 @@ class MsProductReview:
         self.body_info = None
         self.load_parser()
         self.crawl = Fetch()
+        if gender and gender not in ['M', 'F']:
+            raise KeyError
         self.gender = gender
         return
 
@@ -50,7 +52,7 @@ class MsProductReview:
         target_url = u.MSA_BEST
         self.crawl = Fetch()
         if self.gender is not None:
-            self.crawl.sess.headers.update({'cookie': '_gf='})
+            self.crawl.sess.headers.update({'cookie': f'_gf={self.gender}'})
         res = self.crawl.fetch_get(target_url)
         if not res:
             raise ValueError
@@ -72,7 +74,7 @@ class MsProductReview:
                 total_page = self.get_review_cnt(html_text)
                 last_page = last_page if last_page > total_page else total_page
             item = self.parse_item(html_text)
-            result.append(item)
+            result.extend(item)
             time.sleep(random.uniform(1, 3))
         return result
 
