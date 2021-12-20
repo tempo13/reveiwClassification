@@ -1,4 +1,5 @@
-from crawl_util import *
+from tqdm import tqdm
+from .crawl_util import *
 import time
 import json
 
@@ -15,7 +16,7 @@ class MsProductReview:
         return
 
     def load_parser(self):
-        f = open('elementSelectorDict.json')
+        f = open('crawl_utils/elementSelectorDict.json')
         selector_meta = json.load(f)
         m = selector_meta.get('MSA')
         self.prd_list = m.get('item_list')
@@ -64,7 +65,8 @@ class MsProductReview:
         result = []
         target_url = u.MSA
         params = {'sort': 'new', 'selectedSimilarNo': 0, 'goodsNo': goods_no}
-        for i in range(1, last_page):
+        print('URL: %s' % u.MSA_PRD + goods_no)
+        for i in tqdm(range(1, last_page)):
             params.update({'page': i})
             res = self.crawl.fetch_get(target_url, params)
             if not res:

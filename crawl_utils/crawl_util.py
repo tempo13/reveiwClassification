@@ -2,8 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import pickle
 import random
-import url_list as u
-import os
+from crawl_utils import url_list as u
 import re
 
 class Fetch:
@@ -14,10 +13,10 @@ class Fetch:
         self.load_ua_list()
 
     def load_ua_list(self):
-        if 'ua_list.pickle' in os.listdir():
-            with open('ua_list.pickle', 'rb') as f:
+        try:
+            with open('crawl_utils/ua_list.pickle', 'rb') as f:
                 self.ua_list = pickle.load(f)
-        else:
+        except:
             self.get_ua()
 
         self.sess.headers = {
