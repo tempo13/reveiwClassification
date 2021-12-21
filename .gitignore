@@ -9,3 +9,4 @@ crawl_utils/url_list.py
 /venv
 /.idea
 __pycache__/
+/history
