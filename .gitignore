@@ -6,7 +6,10 @@
 crawl_utils/url_list.py
 # CSV file
 *.csv
+# Model file
+*.h5
 /venv
 /.idea
 __pycache__/
 /history
+/analyze_utils/config.py

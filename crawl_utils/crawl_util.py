@@ -54,3 +54,14 @@ def parse_number(txt):
     """
     result = re.findall(r'\d+', txt)
     return result
+
+
+def save_file(data, file_name):
+    with open(file_name, 'wb') as f:
+        pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
+
+
+def load_pickle_file(file_name):
+    with open(file_name, 'rb') as f:
+        result = pickle.load(f)
+    return result

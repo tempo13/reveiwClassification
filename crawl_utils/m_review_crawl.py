@@ -1,3 +1,5 @@
+import turtle
+
 from tqdm import tqdm
 from .crawl_util import *
 import time
@@ -60,6 +62,12 @@ class MsProductReview:
 
         goods_list = self.parse_list(res.text)
         return goods_list
+
+    def crawl_category_list(self):
+        target_url = u.MSA_CATEGORY
+        self.crawl = Fetch()
+        if self.gender is not None:
+            self.crawl.sess.headers.update({'cookie': f'_gf={self.gender}'})
 
     def crawl_item(self, goods_no, last_page=10):
         result = []

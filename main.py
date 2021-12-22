@@ -3,10 +3,6 @@ import pandas as pd
 import time, random
 import pickle
 
-def save_file(data, file_name):
-    with open(file_name, 'wb') as f:
-        pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
-
 
 def m_product_review():
     gender = 'M'
@@ -20,7 +16,7 @@ def m_product_review():
             r = crawl.crawl_item(g, 100)
             print(str(g) + "=" * 30 + str(len(r)) + "=" * 30)  # Print Process
             review_list.extend(r)
-            save_file(review_list, pickle_file_name)
+            m_review_crawl.save_file(review_list, pickle_file_name)
         except Exception as e:
             print(str(e))
             continue
@@ -35,6 +31,6 @@ def m_product_review_all(prd_id):
     crawl = m_review_crawl.MsProductReview()
     r = crawl.crawl_item(prd_id, 2000)
     result_list.extend(r)
-    save_file(result_list, pickle_file_name)
+    m_review_crawl.save_file(result_list, pickle_file_name)
     df = pd.DataFrame.from_records(result_list)
     df.to_csv(f'product_review_{prd_id}.csv', encoding='utf-8-sig', index=False)
