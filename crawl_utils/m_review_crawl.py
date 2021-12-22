@@ -1,5 +1,3 @@
-import turtle
-
 from tqdm import tqdm
 from .crawl_util import *
 import time
