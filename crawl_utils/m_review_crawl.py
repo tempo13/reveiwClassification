@@ -76,15 +76,19 @@ class MsProductReview:
         result.extend(item)
 
         print('URL: %s' % u.MSA_PRD + goods_no, 'last page: %s' % last_page)
-        for i in tqdm(range(2, last_page)):
-            params.update({'page': i})
-            res = self.crawl.fetch_get(target_url, params)
-            if not res:
-                raise ValueError
-            html_text = str(res.text).replace('<br>', '')
-            item = self.parse_item(html_text)
-            result.extend(item)
-            time.sleep(random.uniform(1, 1.5))
+        try:
+            for i in tqdm(range(2, last_page)):
+                params.update({'page': i})
+                res = self.crawl.fetch_get(target_url, params)
+                if not res:
+                    raise ValueError
+                html_text = str(res.text).replace('<br>', '')
+                item = self.parse_item(html_text)
+                result.extend(item)
+                time.sleep(random.uniform(1, 1.5))
+        except Exception as e:
+            print(e)
+            return result
         return result
 
     def get_review_cnt(self, html_text: str):
