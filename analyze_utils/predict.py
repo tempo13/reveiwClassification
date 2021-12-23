@@ -2,6 +2,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.models import load_model
 from analyze_utils import config as c
 from konlpy.tag import Mecab
+import platform
 import re
 
 
@@ -9,7 +10,7 @@ class GenderPredict:
 
     def __init__(self, model_file, tokenizer, max_len):
         self.loaded_model = load_model(model_file)
-        self.mecab = Mecab(c.MECAB_PATH)
+        self.mecab = Mecab(c.MECAB_PATH) if platform.system() == "Windows" else Mecab()
         self.stopwords = c.STOP_WORDS
         self.tokenizer = tokenizer
         self.max_len = max_len

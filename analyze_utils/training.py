@@ -2,7 +2,7 @@
 https://wikidocs.net/94600 를 참고하여 만들었습니다.
 """
 import os
-import re
+import platform
 import pandas as pd
 import numpy as np
 from konlpy.tag import Mecab
@@ -21,7 +21,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 class GenderTraining:
 
     def __init__(self):
-        self.mecab = Mecab(c.MECAB_PATH)
+        self.mecab = Mecab(c.MECAB_PATH) if platform.system() == "Windows" else Mecab()
         self.stopwords = c.STOP_WORDS
 
     @staticmethod
