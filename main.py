@@ -34,16 +34,23 @@ def m_product_review_all(prd_id, page:int=100):
     m_review_crawl.save_file(result_list, pickle_file_name)
     df = pd.DataFrame.from_records(result_list)
     df.to_csv(f'product_review_{prd_id}.csv', encoding='utf-8-sig', index=False)
+    prd_info = crawl.get_prd_info(prd_id)
+    return prd_info
 
 
 if __name__ == '__main__':
-    # prd_id = '544003'
-    # prd_id = '867282'
-    # prd_id = '1324127'
-    # prd_id = '623695'
-    # prd_id = '1540380'
-    # prd_id = '1139338'
-    # prd_id = '1773782'
-    # prd_id = '1145380'
-    prd_id = '1628385'
-    m_product_review_all(prd_id, 3000)
+    prd_id_list = []
+    prd_id_list = list(set(prd_id_list))
+    info_list = []
+    for prd_id in prd_id_list:
+        prd_i = m_product_review_all(prd_id, 2000)
+        info_list.append(prd_i)
+        time.sleep(random.uniform(2, 3))
+
+    df = pd.DataFrame.from_records(info_list)
+    try:
+        info_file = pd.read_csv('prd_info.csv')
+        df = info_file.append(df)
+    except:
+        pass
+    df.to_csv('prd_info.csv', index=False, encoding='utf-8-sig')

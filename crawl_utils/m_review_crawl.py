@@ -105,6 +105,40 @@ class MsProductReview:
         review_cnt = int(float(review_cnt))
         return review_cnt
 
+    def get_prd_info(self, goods_no):
+        target_url = u.MSA_PRD + str(goods_no)
+        res = self.crawl.fetch_get(target_url)
+        html = BeautifulSoup(res.text, 'html.parser')
+        html.find('span', attrs={'n-tooltip'}).extract()
+        prd_title = html.find('span', attrs={'class': 'product_title'})
+        category_elm = html.find('p', attrs={'class': 'item_categories'})
+        if category_elm is not None:
+            category = [url.get_text() for url in category_elm.select('a') if "/category/" in url['href']]
+        else:
+            category = []
+
+        result = {'title': prd_title.get_text() if prd_title is not None else "",
+                  'categories': category,
+                  'url': target_url}
+        article_info = html.find('ul', attrs={'class': 'product_article'})
+        if not article_info:
+            return result
+        info_list = article_info.select('li')
+        for i in info_list:
+            if len(i.select('p')) > 1:
+                e = i.select('p')
+                head, cont = e[0].get_text(), e[1].get_text()
+                if "/" in head:
+                    info = {"brand": c.replace(' ', '') for h, c in zip(head.split('/'), cont.split('/')) if "브랜드" in h}
+                    result.update(info)
+            else:
+                e = i.select('a')
+                tag = [x.get_text() for x in e] if len(e) > 1 else [i.get_text()]
+                result.update({'hashtag': tag})
+
+        [result.update({k: clear_txt(v)}) if isinstance(v, str) else result.update({k:v}) for k, v in result.items()]
+        return result
+
     def main(self):
         stop_stack = 0
         goods_list = self.crawl_list()
@@ -128,7 +162,9 @@ class MsProductReview:
 if __name__ == '__main__':
     # 2081554, NP Padding
     crawl = MsProductReview()
-    import pickle
-    review_list = crawl.main()
-    with open('review_list.pickle', 'wb') as f:
-        pickle.dump(review_list, f, pickle.HIGHEST_PROTOCOL)
+    res = crawl.get_prd_info('2197095')
+    print(res)
+    # import pickle
+    # review_list = crawl.main()
+    # with open('review_list.pickle', 'wb') as f:
+    #     pickle.dump(review_list, f, pickle.HIGHEST_PROTOCOL)

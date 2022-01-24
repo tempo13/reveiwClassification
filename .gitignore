@@ -13,3 +13,5 @@ crawl_utils/url_list.py
 __pycache__/
 /history
 /analyze_utils/config.py
+# data zip files
+*.zip

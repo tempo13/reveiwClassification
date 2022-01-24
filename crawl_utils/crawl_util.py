@@ -55,6 +55,9 @@ def parse_number(txt):
     result = re.findall(r'\d+', txt)
     return result
 
+def clear_txt(txt):
+    txt = txt.replace('\n', '').replace('\r', '').replace('\t', '')
+    return txt
 
 def save_file(data, file_name):
     with open(file_name, 'wb') as f:
